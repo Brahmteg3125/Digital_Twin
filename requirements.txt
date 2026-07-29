@@ -15,3 +15,6 @@ accelerate==1.14.0
 # LLM script generation (Milestone 6)
 groq==1.0.0
 python-dotenv==1.2.1
+
+# Text-to-speech (Milestone 7)
+edge-tts
