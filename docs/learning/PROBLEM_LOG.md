@@ -130,12 +130,21 @@ Legend: ✅ solved · 🟡 worked-around · 🔴 OPEN
   code bug. Newer GPU architectures have broader/longer software support; a T4 is a safe default.
 - **Interview value:** ⭐⭐ "a hardware/software compatibility issue and how you diagnosed it."
 
-## P11 — SDXL generated a BLACK-AND-WHITE Aria 🔴 OPEN  · Milestone 8 (Kaggle, T4)
-- **Symptom:** regenerating Aria's seed-42 face on Kaggle produced a **grayscale** image instead of
-  color.
-- **Status:** OPEN — root cause **not yet investigated** (do NOT assume a cause).
-- **Hypotheses to test later (unverified):** (a) negative-prompt tokens like
-  `oversaturated, unnatural colors` over-desaturating; (b) positive token `film grain` nudging a
-  black-and-white "film" aesthetic; (c) a precision/VAE issue on this environment; (d) something in
-  our `QUALITY`/`NEGATIVE` prompt constants. Reproduce, then bisect (drop tokens one at a time).
-- **Next action:** when we resume M8, treat this as a proper OBSERVE→HYPOTHESIZE→TEST debug.
+## P11 — SDXL generated a BLACK-AND-WHITE Aria ✅  · Milestone 8 (Kaggle, T4)
+- **Symptom:** regenerating Aria's seed-42 face on Kaggle produced a **grayscale** image (the rest
+  of the image was fine — a narrow, color-only failure).
+- **UNDERSTAND ("what changed?"):** last color image was Colab/M3 with a simple prompt; M5 added
+  quality tokens + a negative prompt. Prime suspect = the prompt.
+- **HYPOTHESES:** (a) positive token `film grain` biases toward black-and-white film; (b) negative
+  `oversaturated, unnatural colors` overshoots away from color into grey.
+- **TEST (bisection, seed 42, 4 variants):** A=both, B=no film grain, C=no color-negatives,
+  D=neither. **Result: only D produced color** → *both* tokens independently desaturate; each alone
+  is enough to grey the image.
+- **ROOT CAUSE:** two color-draining prompt tokens introduced in M5 — `film grain` (positive) and
+  `oversaturated, unnatural colors` (negative).
+- **FIX:** removed both from `src/image/prompts.py` (`QUALITY` + `NEGATIVE`). Verify by regenerating.
+- **LESSON:** ⭐⭐ prompt tokens have side effects — "quality" words carry aesthetic baggage
+  (`film grain`→mono), and **negative-prompting color can overshoot into grayscale**. Isolate one
+  variable at a time (bisection) to find the offending token.
+- **Interview value:** ⭐⭐ "a well-intentioned change caused a subtle regression; I isolated it with
+  a controlled bisection experiment." (INTERVIEW_STORIES S8)

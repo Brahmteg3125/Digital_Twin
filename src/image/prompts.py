@@ -4,12 +4,12 @@ Pure Python (no torch / diffusers) so it can be tested LOCALLY without a GPU.
 """
 from src.persona.persona import Persona
 
-QUALITY = ("photorealistic, natural skin texture, film grain, "
+QUALITY = ("photorealistic, natural skin texture, "
            "soft natural lighting, high detail, sharp focus")
 
 NEGATIVE = ("plastic skin, airbrushed, cgi, 3d render, cartoon, illustration, "
             "deformed, extra fingers, blurry, out of focus, "
-            "oversaturated, unnatural colors, watermark, text, low quality")
+            "watermark, text, low quality")
 
 
 def build_prompt(persona: Persona, scene: str = "") -> str:

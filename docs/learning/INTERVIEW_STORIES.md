@@ -74,6 +74,16 @@ Rating: ⭐ useful · ⭐⭐ strong · ⭐⭐⭐ headline.
   context is lost between sessions and the reasoning journey is preserved.
 - **Maps to:** "How do you manage knowledge / onboarding / documentation?"
 
+## S8 — A "quality" improvement that quietly broke color ⭐⭐
+*(refs: PROBLEM_LOG P11)*
+- Added quality/negative prompts (M5) to fight a plastic look; later Aria rendered in **grayscale**.
+  Asked "what changed?" → the prompt. Ran a controlled **bisection** (4 variants, fixed seed) and
+  found *two* tokens each desaturated the image: `film grain` (positive) and
+  `oversaturated, unnatural colors` (negative). Removed both → color returned.
+- **Lesson:** prompt tokens have side effects; negative-prompting color can overshoot to grey;
+  isolate one variable at a time.
+- **Maps to:** "A subtle bug and how you isolated it." / "A change with unintended consequences."
+
 ---
 ### Candidate one-liners to expand later
 - "Tell me about a hard bug" → **S1** (memory saga).
