@@ -1,0 +1,72 @@
+# LEARNING_LOG.md — compact session continuity
+
+Newest entries at the bottom. Keep entries SHORT. This is the fastest way to answer
+"where are we and what's next?" Reconstructed from git history + our conversation.
+
+Template:
+`### <milestone/session> — <title>` · Built · Learned · Files · Decisions · Problems · State · Next
+
+---
+
+### M1 — Foundations
+- Built: `.venv`, `git init`, root `.gitignore`, `src/` package, `README.md`, `requirements.txt`;
+  GitHub remote (repo later renamed **Digital_Twin**).
+- Learned: venv, git staging/commit/push, gitignore semantics, modular architecture, DRY,
+  requirements round-trip.
+- Problems: P1 (venv self-ignore). State: ✅ committed.
+
+### M2 — Persona data model
+- Built: `src/persona/persona.py` — `Persona` dataclass + JSON `save()`/`load()`; `data/personas/aria.json`.
+- Learned: classes/objects, `@dataclass`, refactoring, `@classmethod` factory, JSON/serialization,
+  `**` unpacking, default args, `__eq__`.
+- Decisions: D2. State: ✅ committed.
+
+### M3 — SDXL image generation
+- Built: `src/image/generator.py` (`ImageGenerator`, `build_prompt`). Ran SDXL on Colab via cloning
+  our repo. Generated Aria (seed 42).
+- Learned: embeddings, CLIP, latent space, VAE, diffusion, U-Net, seeds, fp16/fp32, pretrained/
+  inference, HF Hub, `sys.path`.
+- Decisions: D1, D3, D4, D6. Problems: P2 (dtype), P7 (`sys.path`). State: ✅ code committed
+  (images are cloud-only, not in repo).
+
+### M4 — Identity preservation (concept proven, build skipped)
+- Did: IP-Adapter on Colab — Aria on a "Tokyo street" clearly resembled her reference → identity
+  conditioning WORKS. Then hit a memory wall.
+- Learned: identity drift, image conditioning (image encoder → image embedding), IP-Adapter, VRAM vs
+  system RAM, CPU offload / attention slicing trade-offs, canonical face = (prompt + seed).
+- Decisions: D7. Problems: **P3, P4, P5, P6** (⭐ the memory saga). State: ⚠️ **not committed**
+  (Colab only); user chose to move on.
+
+### M5 — Prompt engineering (all local)
+- Built: `src/image/prompts.py` (pure) with `QUALITY`/`NEGATIVE` + `build_prompt(persona, scene="")`
+  + `build_negative_prompt()`; wired into `generator.py`.
+- Learned: prompt engineering, positive/negative prompts, CLIP token limit, separation of pure logic
+  from heavy deps (testability), falsy values.
+- Decisions: D5. Problems: P8. State: ✅ committed.
+
+### M6 — LLM script generation (Groq)
+- Built: `src/script/generator.py` — `build_script_prompt`, `generate_script` (Groq
+  `llama-3.3-70b-versatile`); `.env` + `python-dotenv`. Aria wrote a real Ludhiana script.
+- Learned: LLMs, orchestration, secrets/.env, chat roles (system/user), API clients.
+- Decisions: D8, D10. State: ✅ committed.
+
+### M7 — Text-to-speech (edge-tts)
+- Built: `src/voice/tts.py` (`text_to_speech` wrapping async `_speak`, voice=`en-US-MichelleNeural`);
+  `main.py` wiring persona→script→voice → `outputs/aria_ludhiana.mp3`. Aria spoke.
+- Learned: TTS, async + `asyncio.run`, abstraction/encapsulation, cleaning LLM output.
+- Decisions: D9, D11. Problems: P9 (wrong-env pins). State: ✅ committed. (`requirements.txt` pin
+  fix was still uncommitted at handoff — commit it.)
+
+### M8 — Lip-sync (Wav2Lip) — IN PROGRESS
+- Did: switched cloud host to **Kaggle** (more RAM). Cloned Wav2Lip. First GPU (P100) failed
+  ("no kernel image") → switched to **T4**. Uploaded Aria's audio; regenerated her seed-42 face on
+  Kaggle via our repo — but it came out **black-and-white** (open bug).
+- Learned: GPU compute capability / torch compatibility (P10), Kaggle setup (Internet toggle,
+  accelerator).
+- Problems: P10 (solved), **P11 (OPEN — B&W image)**. State: 🔄 in progress (Kaggle notebook).
+- **NEXT:** debug the B&W image (OBSERVE→HYPOTHESIZE→TEST), then install Wav2Lip deps + checkpoints
+  and run inference (Aria's image + audio → talking video).
+
+### Meta — Persistence system
+- Built: `CLAUDE.md` + `docs/learning/` (this system). Removed junk `temp.py`.
+- Purpose: repo = durable memory across sessions.
