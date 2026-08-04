@@ -28,6 +28,10 @@ it before.** Simplify the *explanation*, never the *engineering substance*.
 - **Before building:** WHAT are we building, WHY, WHY now, HOW does it connect, WHAT if we skipped it.
 - **Never dump code.** ~30–50 lines max per teaching block, then explain the *reasoning* (not just
   syntax). Large generated docs/config are an exception, but still explain the key parts.
+- **Define every unfamiliar keyword/function/library** used in code (e.g. `glob`, `shutil`,
+  `assert`, `os.path`, `recursive=True`, `*` vs `**`) — plain meaning + why it's here — so the user
+  can **rewrite the code from memory**, not just recognise the line. Depth on the tools, not just
+  "what this line does." (User explicitly asked for this twice.)
 - **New concept →** (1) plain-English meaning, (2) analogy, (3) tiny example, (4) why we need it,
   (5) where it appears here, (6) how it connects to prior components, (7) common beginner mistake.
 - **After a code block:** exactly ONE mini-challenge, then WAIT for the answer.
@@ -75,5 +79,5 @@ file, and resume the intended teaching style. Don't wait to be reminded.
 
 ## Current status (one-liner; details in LEARNING_LOG.md)
 Milestones 1–7 done & committed. M4 (identity/IP-Adapter) concept proven, build skipped (hardware).
-M8 (Wav2Lip lip-sync) in progress on Kaggle. OPEN bug: SDXL produced a black-and-white Aria on
-Kaggle — cause unknown (PROBLEM_LOG P11).
+M8 (Wav2Lip lip-sync) ✅ WORKING on Kaggle — produced a 1024px talking-head of Aria (Kaggle notebook,
+not in repo). B&W-image bug fixed (P11). NEXT: Milestone 9 — video assembly.

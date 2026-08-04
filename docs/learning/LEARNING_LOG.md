@@ -57,15 +57,19 @@ Template:
 - Decisions: D9, D11. Problems: P9 (wrong-env pins). State: ✅ committed. (`requirements.txt` pin
   fix was still uncommitted at handoff — commit it.)
 
-### M8 — Lip-sync (Wav2Lip) — IN PROGRESS
-- Did: switched cloud host to **Kaggle** (more RAM). Cloned Wav2Lip. First GPU (P100) failed
-  ("no kernel image") → switched to **T4**. Uploaded Aria's audio; regenerated her seed-42 face on
-  Kaggle via our repo — but it came out **black-and-white** (open bug).
-- Learned: GPU compute capability / torch compatibility (P10), Kaggle setup (Internet toggle,
-  accelerator).
-- Problems: P10 (solved), **P11 (OPEN — B&W image)**. State: 🔄 in progress (Kaggle notebook).
-- **NEXT:** debug the B&W image (OBSERVE→HYPOTHESIZE→TEST), then install Wav2Lip deps + checkpoints
-  and run inference (Aria's image + audio → talking video).
+### M8 — Lip-sync (Wav2Lip) — ✅ WORKING
+- Did: moved cloud host to **Kaggle** (more RAM). P100 failed ("no kernel image") → **T4**. Fixed the
+  B&W bug (P11). Used a Kaggle dataset for the Wav2Lip repo + `wav2lip_gan.pth`; downloaded
+  `s3fd.pth`; patched `audio.py` for modern librosa (P12); freed SDXL VRAM before inference (P13);
+  idempotent setup cell for the ephemeral env (P14). **Produced `aria_talking.mp4` (1024px, ~11.8s)
+  — Aria lip-syncs her Ludhiana script!**
+- Learned: Wav2Lip pipeline (face-detect → mouth-sync → composite), GPU compute capability (P10),
+  legacy-dep patching (P12), multi-model GPU memory handoff (P13), idempotent setup (P14),
+  read-only-input vs writable-workbench, keyword-only args.
+- Problems: P10, P11, P12, P13, P14 — all ✅. State: ✅ lip-sync works (in the Kaggle notebook; not
+  committed to the repo).
+- **NEXT:** Milestone 9 — video assembly (stitch clip + captions into a polished short). Consider
+  saving the Kaggle lip-sync steps as a notebook in the repo for reproducibility.
 
 ### Meta — Persistence system
 - Built: `CLAUDE.md` + `docs/learning/` (this system). Removed junk `temp.py`.

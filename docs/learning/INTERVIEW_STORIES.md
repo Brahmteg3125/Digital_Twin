@@ -84,6 +84,17 @@ Rating: ⭐ useful · ⭐⭐ strong · ⭐⭐⭐ headline.
   isolate one variable at a time.
 - **Maps to:** "A subtle bug and how you isolated it." / "A change with unintended consequences."
 
+## S9 — Integrating a legacy model (Wav2Lip) end-to-end ⭐⭐⭐
+*(refs: PROBLEM_LOG P10, P12, P13, P14)*
+- Goal: lip-sync Aria's generated face to her TTS audio using Wav2Lip (a 2020 codebase). Fought
+  through four real issues in sequence: a GPU compatibility error (P100 unsupported → T4), a
+  modern-librosa API break (patched the legacy call), an OOM because my *other* model (SDXL) was
+  still holding the GPU (freed it between stages), and an ephemeral environment that kept wiping
+  setup (made it idempotent). Result: a working 1024px talking-head video.
+- **Lesson:** integrating legacy ML code with modern deps + limited hardware is real engineering —
+  systematic debugging, memory handoff between models, reproducible setup.
+- **Maps to:** "A hard integration." / "Something you built and debugged end-to-end." / "Working with legacy code."
+
 ---
 ### Candidate one-liners to expand later
 - "Tell me about a hard bug" → **S1** (memory saga).

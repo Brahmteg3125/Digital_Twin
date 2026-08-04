@@ -148,3 +148,33 @@ Legend: ✅ solved · 🟡 worked-around · 🔴 OPEN
   variable at a time (bisection) to find the offending token.
 - **Interview value:** ⭐⭐ "a well-intentioned change caused a subtle regression; I isolated it with
   a controlled bisection experiment." (INTERVIEW_STORIES S8)
+
+## P12 — Wav2Lip broke on modern librosa (`mel()` keyword-only args) ✅  · Milestone 8
+- **Symptom:** `TypeError: mel() takes 0 positional arguments but 2 positional arguments ... given`
+  at `audio.py:100`, calling `librosa.filters.mel(hp.sample_rate, hp.n_fft, ...)`.
+- **Root cause:** modern librosa (≥0.10) made `sr`/`n_fft` **keyword-only**; Wav2Lip's 2020 code
+  passes them **positionally**.
+- **Fix:** patched `audio.py` → `librosa.filters.mel(sr=..., n_fft=..., ...)` (in our writable copy).
+- **Lesson:** ⭐ legacy code breaks when a library tightens its signature (keyword-only args). Patch
+  the exact call the traceback points to.
+- **Interview value:** ⭐⭐ "integrating a 2020 codebase with modern dependencies."
+
+## P13 — Wav2Lip OOM because SDXL was still resident (two processes, one GPU) ✅  · Milestone 8
+- **Symptom:** `CUDA out of memory` in Wav2Lip's face detector; GPU showed ~14 GiB used, ~35 MiB
+  free — even though Wav2Lip's models are small.
+- **Root cause:** the notebook still held the **SDXL pipeline** (`gen`) from regenerating Aria's
+  face. The `!python inference.py` **subprocess** shares the same physical GPU and had no room.
+- **Fix:** free SDXL first — `del gen; gc.collect(); torch.cuda.empty_cache()`. Inference then ran at
+  full 1024px (no `--resize_factor` needed).
+- **Lesson:** ⭐⭐ on ONE GPU running a multi-model pipeline, **release each stage's memory before the
+  next**; `empty_cache()` returns reserved VRAM so other processes can use it. 🔗 same theme as P4/P5.
+- **Interview value:** ⭐⭐⭐ "fitting multiple large models on a single GPU / memory handoff."
+
+## P14 — Kaggle kept wiping /kaggle/working → idempotent setup ✅  · Milestone 8
+- **Symptom:** across kernel restarts, `/kaggle/working` (Wav2Lip copy, s3fd, Aria's face) kept
+  getting wiped, forcing painful piece-by-piece rebuilds.
+- **Fix / practice:** consolidated all fragile setup (locate code → copy → download s3fd → patch
+  audio.py) into ONE **idempotent** cell that rebuilds a clean state on demand.
+- **Lesson:** ⭐⭐ in ephemeral cloud environments, encode setup as a single re-runnable script.
+  Durable state = files/datasets + reproducible seeds + the repo, never RAM.
+- **Interview value:** ⭐⭐ "reproducible/idempotent setup for ephemeral compute."
