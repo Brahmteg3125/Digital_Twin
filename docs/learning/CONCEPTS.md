@@ -94,6 +94,13 @@ Not Wikipedia — just enough to understand and explain it.
 - **FastAPI + uvicorn** — FastAPI builds the API (+ free `/docs` test page); uvicorn is the server
   that runs it and listens for requests.
 
+## Video assembly (Milestone 9)
+- **Video assembly** — stitching media (audio + text + image/clip) into one final video file, in
+  code. Like a tiny iMovie you drive with Python.
+- **moviepy** — clips on a timeline: `AudioFileClip` (load audio, `.duration`), `ColorClip` (solid
+  background), `TextClip` (text as a clip; `method="caption"` wraps; needs a `.ttf` **font path**),
+  `CompositeVideoClip([bg, text])` (stack — later = on top), `.with_duration/position/audio`,
+  `write_videofile(fps=...)` (render). 9:16 = vertical social format.
+
 ## To learn next (not yet covered)
-Lip-sync/Wav2Lip internals · video assembly (ffmpeg/moviepy) · queues · caching ·
-production logging/config.
+Wav2Lip internals · queues · caching · production logging/config.

@@ -78,6 +78,7 @@ drop analogies, stop connecting code to architecture, or ignore these docs — S
 file, and resume the intended teaching style. Don't wait to be reminded.
 
 ## Current status (one-liner; details in LEARNING_LOG.md)
-Milestones 1–7 done & committed. M4 (identity/IP-Adapter) concept proven, build skipped (hardware).
-M8 (Wav2Lip lip-sync) ✅ WORKING on Kaggle — produced a 1024px talking-head of Aria (Kaggle notebook,
-not in repo). B&W-image bug fixed (P11). NEXT: Milestone 9 — video assembly.
+Milestones 1–3, 5–9, 11, 12 done & committed. M4 (identity/IP-Adapter) concept proven, build skipped
+(hardware). M8 (Wav2Lip lip-sync) ✅ working on Kaggle — 1024px talking-head (notebook, not in repo).
+M9 video assembly (moviepy) ✅ local. M11 FastAPI + M12 orchestrator ✅ local (tested on :8001).
+README refreshed for recruiters. NEXT: final wrap-up — interview prep (`INTERVIEW ME` from docs).

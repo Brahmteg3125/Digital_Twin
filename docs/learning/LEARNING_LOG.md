@@ -87,3 +87,14 @@ Template:
 - State: ✅ API works locally (script+voice; image/lip-sync remain cloud workers).
 - **NEXT (user's plan = "production pieces THEN wrap up"):** wrap up — final retrospective + turn
   PROBLEM_LOG/DECISIONS/INTERVIEW_STORIES into polished interview answers + a clean README/demo.
+
+### M9 — Video assembly (moviepy)
+- Built: `src/video/assembler.py` — `assemble_video(audio, caption)` → a vertical 720x1280 captioned
+  MP4 via moviepy (ColorClip background + TextClip caption + AudioFileClip). Tested locally →
+  `outputs/aria_video.mp4`.
+- Learned: video assembly / moviepy (clips on a timeline; `with_duration/position/audio`;
+  `CompositeVideoClip` stacking order; `write_videofile`), the TextClip **font-path** gotcha, 9:16.
+- Decisions: D14 (moviepy). Deps: moviepy==2.1.2.
+- State: ✅ works locally. Polish path: use the Wav2Lip talking-head as the background (same
+  `CompositeVideoClip` technique).
+- **NEXT:** WRAP-UP — README refreshed ✅; then interview prep (`INTERVIEW ME` from our docs).

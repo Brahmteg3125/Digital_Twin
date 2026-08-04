@@ -36,6 +36,7 @@ src/persona      src/script/generator.py         src/image/
 | Image | `src/image/prompts.py`, `generator.py` | prompt building (pure) + SDXL generation (heavy) | **cloud GPU** |
 | Script | `src/script/generator.py` | LLM prompt + Groq call → script text | local (API) |
 | Voice | `src/voice/tts.py` | text → MP3 via edge-tts (async wrapped) | local (internet) |
+| Video | `src/video/assembler.py` | audio + caption → captioned vertical MP4 (moviepy) | local |
 | Orchestrator | `src/orchestrator/pipeline.py` | coordinate the pipeline (recipe card) → result dict | local |
 | API | `src/api/app.py` | FastAPI front door (`GET /`, `POST /create`) → JSON | local |
 | Entry | `main.py` | quick local run via the orchestrator | local |

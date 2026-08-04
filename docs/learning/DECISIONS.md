@@ -102,3 +102,11 @@ Format: Context · Options · Chosen · Why · Trade-offs · Revisit if.
   industry-standard for Python ML APIs; returned dicts auto-serialize to JSON.
 - **Note:** heavy GPU stages (image, lip-sync) run as separate cloud workers; the API handles the
   light stages — a real "light API + GPU worker" split.
+
+## D14 — moviepy for video assembly
+- **Options:** raw `ffmpeg` (subprocess) vs. `moviepy` (Pythonic wrapper).
+- **Chosen:** `moviepy` (`src/video/assembler.py`).
+- **Why:** compose backgrounds/captions/audio as Python objects (clips on a timeline) — readable and
+  resume-relevant; bundles ffmpeg via imageio-ffmpeg.
+- **Trade-off:** heavier than a raw ffmpeg call; **TextClip needs an explicit font path** (gotcha).
+- **Revisit if:** we need heavy batch rendering → drop to raw ffmpeg for speed.

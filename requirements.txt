@@ -22,3 +22,6 @@ edge-tts==7.2.8
 # API (Milestone 11)
 fastapi==0.141.1
 uvicorn[standard]==0.52.1
+
+# Video assembly (Milestone 9)
+moviepy==2.1.2
