@@ -1,17 +1,9 @@
-"""Entry point: run the pipeline so far — persona -> script -> voice."""
+"""Entry point: run the pipeline through the orchestrator."""
 from src.persona.persona import Persona
-from src.script.generator import generate_script
-from src.voice.tts import text_to_speech
+from src.orchestrator.pipeline import create_content
 
-# 1. Who she is
 aria = Persona("Aria", 24, "cheerful", "warm smile and freckles")
+result = create_content(aria, "a 30-second travel tip about Ludhiana")
 
-# 2. She writes her own script
-script = generate_script(aria, "a 30-second travel tip about Ludhiana")
-
-# 3. Clean stray quotes/whitespace the LLM may add (TTS wants clean text)
-script = script.strip().strip('"').strip()
-print("SCRIPT:\n", script, "\n")
-
-# 4. She speaks it
-text_to_speech(script, "outputs/aria_ludhiana.mp3")
+print("SCRIPT:\n", result["script"])
+print("\nAUDIO:", result["audio_path"])

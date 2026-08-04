@@ -86,4 +86,19 @@ Format: Context · Options · Chosen · Why · Trade-offs · Revisit if.
 ## D11 — `main.py` as a temporary orchestrator
 - **Why:** a root entry point wires `persona → script → voice` today; a robust orchestrator module
   comes later (Milestone 12). `python main.py` works because the root is on `sys.path`.
-- **Revisit at:** Milestone 12 — extract into `src/orchestrator/`.
+- **Revisit at:** Milestone 12 — extract into `src/orchestrator/`. ✅ DONE (see D12).
+
+## D12 — An orchestrator module coordinates the pipeline
+- **Options:** keep the wiring in `main.py` vs. a dedicated coordinator.
+- **Chosen:** `src/orchestrator/pipeline.py::create_content()` — one reusable "recipe card".
+- **Why:** both `main.py` and the API need the same steps; without it we'd duplicate the wiring. It
+  **returns a dict** (usable data) instead of printing, so any caller (CLI, API, tests) can use it.
+- **Trade-off:** thin with only 2 stages today; earns its keep as callers/stages grow.
+
+## D13 — FastAPI for the API layer
+- **Options:** FastAPI, Flask, Django.
+- **Chosen:** FastAPI (`src/api/app.py`).
+- **Why:** minimal code, automatic request validation + interactive `/docs`, async-friendly,
+  industry-standard for Python ML APIs; returned dicts auto-serialize to JSON.
+- **Note:** heavy GPU stages (image, lip-sync) run as separate cloud workers; the API handles the
+  light stages — a real "light API + GPU worker" split.

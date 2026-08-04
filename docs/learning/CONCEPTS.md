@@ -83,6 +83,17 @@ Not Wikipedia — just enough to understand and explain it.
   (artifacts to avoid). Fights "plastic" look from both sides. Mind CLIP's ~77-token limit.
 - **TTS** — text → spoken audio; neural voices (edge-tts) sound natural.
 
+## APIs & the web (Milestone 11)
+- **Orchestration** — a coordinator that runs the pipeline stages in order (the "recipe card" /
+  conductor). No AI itself; the AI lives in the stages. Ours: `create_content(persona, topic)`.
+- **API** — a way for other programs/people to *use* your code over the internet: send a request,
+  get a response. Restaurant: waiter (API) → recipe card (orchestrator) → cooks (stages).
+- **HTTP** — the request/response language of the web. **Endpoint** = one address (e.g. `/create`).
+- **GET vs POST** — GET = "give me info" (read); POST = "do/create something" (our `/create`).
+- **JSON response** — FastAPI turns the returned dict into JSON automatically. 🔗 dict ↔ JSON.
+- **FastAPI + uvicorn** — FastAPI builds the API (+ free `/docs` test page); uvicorn is the server
+  that runs it and listens for requests.
+
 ## To learn next (not yet covered)
-Lip-sync/Wav2Lip internals · video assembly (ffmpeg/moviepy) · REST/HTTP/FastAPI · queues ·
-caching · production logging/config.
+Lip-sync/Wav2Lip internals · video assembly (ffmpeg/moviepy) · queues · caching ·
+production logging/config.

@@ -36,7 +36,9 @@ src/persona      src/script/generator.py         src/image/
 | Image | `src/image/prompts.py`, `generator.py` | prompt building (pure) + SDXL generation (heavy) | **cloud GPU** |
 | Script | `src/script/generator.py` | LLM prompt + Groq call → script text | local (API) |
 | Voice | `src/voice/tts.py` | text → MP3 via edge-tts (async wrapped) | local (internet) |
-| Entry | `main.py` | wire persona→script→voice | local |
+| Orchestrator | `src/orchestrator/pipeline.py` | coordinate the pipeline (recipe card) → result dict | local |
+| API | `src/api/app.py` | FastAPI front door (`GET /`, `POST /create`) → JSON | local |
+| Entry | `main.py` | quick local run via the orchestrator | local |
 | Data | `data/personas/aria.json` | saved sample persona | local (committed) |
 
 ## Data flow (today)
@@ -60,5 +62,6 @@ Image path (separate, cloud): `Persona → build_prompt() → ImageGenerator.gen
 - Cross-module imports require the repo root on `sys.path` (`python -m ...` or `main.py` at root).
 
 ## Not built yet
-Lip-sync (M8, in progress on Kaggle) · video assembly (M9) · output manager (M10) ·
-FastAPI layer (M11) · real orchestrator (M12) · production hardening (M13) · docs/polish (M14).
+Done since: lip-sync (M8) ✅ · orchestrator (M12) ✅ · API (M11) ✅.
+Remaining: video assembly (M9) · output manager (M10) · production hardening (M13) ·
+docs/polish (M14) · interview packaging (M15).

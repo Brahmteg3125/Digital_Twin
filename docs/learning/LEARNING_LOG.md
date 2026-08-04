@@ -74,3 +74,16 @@ Template:
 ### Meta — Persistence system
 - Built: `CLAUDE.md` + `docs/learning/` (this system). Removed junk `temp.py`.
 - Purpose: repo = durable memory across sessions.
+
+### M11+M12 — API + Orchestrator (production pieces)
+- Built: `src/orchestrator/pipeline.py` (`create_content(persona, topic)` = the "recipe card"
+  coordinating script+voice, returns a dict) and `src/api/app.py` (FastAPI: `GET /` health +
+  `POST /create?topic=...` → runs the pipeline, returns JSON). Refactored `main.py` to call the
+  orchestrator. Tested locally (uvicorn on :8001) — `POST /create` returned a real script+audio for
+  Aria over HTTP.
+- Learned: orchestration (conductor / recipe card), API/HTTP/REST, endpoints, GET vs POST, JSON
+  responses, FastAPI + uvicorn, auto-docs (`/docs`), light-API-vs-GPU-worker split.
+- Decisions: D12 (orchestrator), D13 (FastAPI). Deps: fastapi==0.141.1, uvicorn[standard]==0.52.1.
+- State: ✅ API works locally (script+voice; image/lip-sync remain cloud workers).
+- **NEXT (user's plan = "production pieces THEN wrap up"):** wrap up — final retrospective + turn
+  PROBLEM_LOG/DECISIONS/INTERVIEW_STORIES into polished interview answers + a clean README/demo.
